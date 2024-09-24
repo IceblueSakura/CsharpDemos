@@ -7,7 +7,7 @@ namespace DataBox;
 /// <br/>
 /// 支持1~24bit的数据，在高兼容性前提下尽可能提升数据创建和获取效率，其次节省内存空间。
 /// <br/>
-/// 如果作为循环键值使可能性能降低，请考虑重载GetHashCode方法。如：设置值后预先缓存HashCode, 而不是每次在获取时生成
+/// 如果作为循环键值使可能性能降低，请考虑重载GetHashCode方法。如：设置值后预先缓存HashCode, 而不是每次在获取时生成。
 /// </summary>
 /// <author>IceblueSakura</author>
 /// <date>2024/09/24</date>
@@ -68,21 +68,36 @@ public struct BitData : IEquatable<BitData>
     {
         if (check && value < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), value, "BitData值非正数！请检查赋值或置check参数为false。");
+            throw new ArgumentOutOfRangeException(nameof(value), value, "值非正数！请检查赋值或置check参数为false。");
         }
         _value = unchecked((uint)value);
         _bitLength = 16;
+    }
+    
+    /// <summary>
+    /// 使用 <see cref="int"/> 类型的值初始化 <see cref="BitData"/> 结构的新实例。
+    /// </summary>
+    /// <param name="value">要存储的 <see cref="int"/> 值。</param>
+    /// <param name="check">是否检查值的非负数情况，默认检查</param>
+    public BitData(int value, bool check = true)
+    {
+        if (check && value < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(value), value, "值非正数！请检查赋值或置check参数为false。");
+        }
+        _value = unchecked((uint)value);
+        _bitLength = 24;
     }
 
     /// <summary>
     /// 使用 <see cref="int"/> 类型的值初始化 <see cref="BitData"/> 结构的新实例。
     /// </summary>
     /// <param name="value">要存储的 <see cref="int"/> 值。</param>
-    public BitData(int value)
+    public BitData(uint value)
     {
-        if (value < 0 || value >= (1 << 24))
+        if (value >= (1 << 24))
             throw new ArgumentOutOfRangeException(nameof(value), value, "值必须在0到16777215（24位）之间。");
-        _value = (uint)value;
+        _value = value;
         _bitLength = 24;
     }
 
@@ -126,13 +141,42 @@ public struct BitData : IEquatable<BitData>
     /// </summary>
     /// <param name="data">要转换的 <see cref="BitData"/>。</param>
     public static implicit operator uint(BitData data) => data.Value;
+    
+    
+    
+    /// <summary>
+    /// 隐式将 <see cref="BitData"/> 转换为 <see cref="uint"/>。
+    /// </summary>
+    /// <param name="data">要转换的 <see cref="BitData"/>。</param>
+    public static implicit operator ushort(BitData data)
+    {
+        if (data.BitLength > 16)
+        {
+            throw new ArgumentOutOfRangeException(nameof(data), data, "接收对象允许范围小于当值值。");
+        }
+        return (ushort)data.Value;
+    }
 
+    /// <summary>
+    /// 隐式将 <see cref="BitData"/> 转换为 <see cref="byte"/>。
+    /// </summary>
+    /// <param name="data">要转换的 <see cref="BitData"/>。</param>
+    public static implicit operator byte(BitData data)
+    {
+        if (data.BitLength > 8)
+        {
+            throw new ArgumentOutOfRangeException(nameof(data), data, "接收对象允许范围小于当值值。");
+        }
+        return (byte)data.Value;
+    }
+    
     /// <summary>
     /// 隐式将 <see cref="byte"/> 转换为 <see cref="BitData"/>。
     /// </summary>
     /// <param name="value">要转换的 <see cref="byte"/> 值。</param>
     public static implicit operator BitData(byte value) => new BitData(value);
-
+    
+    
     /// <summary>
     /// 隐式将 <see cref="ushort"/> 转换为 <see cref="BitData"/>。
     /// </summary>
