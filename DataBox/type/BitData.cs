@@ -1,13 +1,15 @@
 using System.Runtime.InteropServices;
 
-namespace DataBox;
+namespace DataBox.type;
 
 /// <summary>
-/// 数据包装类，根据传入参数的类型选择合适的隐式类型转换。仅能存储正数值
+/// 数据包装类，根据传入参数的类型选择合适的隐式类型转换，仅能存储正整数值。
 /// <br/>
 /// 支持1~24bit的数据，在高兼容性前提下尽可能提升数据创建和获取效率，其次节省内存空间。
 /// <br/>
-/// 如果作为循环键值使可能性能降低，请考虑重载GetHashCode方法。如：设置值后预先缓存HashCode, 而不是每次在获取时生成。
+/// 如果作为循环键值可能使性能降低，请考虑重载GetHashCode方法。如：设置值后预先缓存HashCode, 而不是每次在获取时生成，但这也会带来额外的内存消耗。
+/// <br/>
+/// 当前单位结构体内存消耗：4 byte
 /// </summary>
 /// <author>IceblueSakura</author>
 /// <date>2024/09/24</date>
@@ -66,7 +68,7 @@ public struct BitData : IEquatable<BitData>
     /// <param name="check">是否检查值的非负数情况，默认检查</param>
     public BitData(short value, bool check = true)
     {
-        if (check && (value & 0x8000) != 0)  // 0x8000 = 1<<15
+        if (check && (value & 0x8000) != 0) // 0x8000 = 1<<15
         {
             throw new ArgumentOutOfRangeException(nameof(value), value, "值非正数！请检查赋值或置check参数为false。");
         }
@@ -82,7 +84,7 @@ public struct BitData : IEquatable<BitData>
     /// <param name="check">是否检查值的非负数情况，默认检查</param>
     public BitData(int value, bool check = true)
     {
-        if (check && (value & 0x80000000) != 0)  // 0x80000000 == 1<<31
+        if (check && (value & 0x80000000) != 0) // 0x80000000 == 1<<31
         {
             throw new ArgumentOutOfRangeException(nameof(value), value, "值非正数！请检查赋值或置check参数为false。");
         }
@@ -174,7 +176,7 @@ public struct BitData : IEquatable<BitData>
             throw new ArgumentOutOfRangeException(nameof(data), data, "接收对象允许范围小于当值值。");
         }
 
-        return (byte)data.Value;
+        return (byte)(data.Value & 0xF); // 保证位数转换不出错
     }
 
     /// <summary>
@@ -197,13 +199,13 @@ public struct BitData : IEquatable<BitData>
     public static implicit operator BitData(short value) => new BitData(value);
 
     /// <summary>
-    /// 显式将 <see cref="uint"/> 转换为 <see cref="BitData"/>。
+    /// 显式将 <see cref="uint"/> 转换为 <see cref="BitData"/>，显式转换是因为可能溢出，需要手动检查确认。
     /// </summary>
     /// <param name="value">要转换的 <see cref="uint"/> 值。</param>
     public static explicit operator BitData(uint value) => new BitData(value, 24);
 
     /// <summary>
-    /// 显式将 <see cref="int"/> 转换为 <see cref="BitData"/>。
+    /// 显式将 <see cref="int"/> 转换为 <see cref="BitData"/>，显式转换是因为可能溢出，需要手动检查确认。
     /// </summary>
     /// <param name="value">要转换的 <see cref="int"/> 值。</param>
     public static explicit operator BitData(int value) => new BitData(value);

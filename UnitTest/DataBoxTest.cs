@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using DataBox;
+using DataBox.type;
 
 namespace UnitTEst;
 
@@ -116,6 +117,13 @@ public class Tests
         Assert.AreEqual(8, data.BitLength);
     }
 
+    [Test] // 验证byte赋值隐式类型转换是否正常
+    public void ImplicitConversion_FromUInt_ToByte_ShouldConvertCorrectly()
+    {
+        uint value = 0x1_0000;
+        BitData data = (BitData)value;
+        Assert.AreEqual(value, data.Value);
+    }
 
     [Test] // 验证ushort赋值隐式类型转换是否正常
     public void ImplicitConversion_FromUShort_ShouldInitializeCorrectly()
