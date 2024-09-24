@@ -231,4 +231,16 @@ public class Tests
         string expected = "Value: 15, BitLength: 4";
         Assert.AreEqual(expected, data.ToString());
     }
+
+    [Test] // 比较奇奇怪怪的类型转换
+    public void IntByteShotConvert_ShouldConvertCorrectly()
+    {
+        var box1 = new BitData((int)1);
+        var box2 = new BitData((short)1);
+        var box3 = new BitData((byte)1);
+        Console.WriteLine(box1.ToString());
+        Assert.IsTrue((byte)1 == box1);
+        Assert.IsTrue((short)1 == box2);
+        Assert.IsTrue((int)1== box3);
+    }
 }

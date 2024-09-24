@@ -179,14 +179,14 @@ public struct BitData : IEquatable<BitData>
     /// </summary>
     /// <param name="left">要比较的第一个 <see cref="BitData"/>。</param>
     /// <param name="right">要比较的第二个 <see cref="BitData"/>。</param>
-    /// <returns>如果两个 <see cref="BitData"/> 实例相等，则为 <c>true</c>；否则为 <c>false</c>。</returns>
-    public static bool operator ==(BitData left, BitData right) => left.Equals(right);
-
+    /// <returns>如果两个 <see cref="BitData"/> 实例的值相等(不比较bit)，则为 <c>true</c>；否则为 <c>false</c>。</returns>
+    public static bool operator ==(BitData left, BitData right) => left.Value == right.Value;
+    
     /// <summary>
     /// 确定两个指定的 <see cref="BitData"/> 实例是否不相等。
     /// </summary>
     /// <param name="left">要比较的第一个 <see cref="BitData"/>。</param>
     /// <param name="right">要比较的第二个 <see cref="BitData"/>。</param>
     /// <returns>如果两个 <see cref="BitData"/> 实例不相等，则为 <c>true</c>；否则为 <c>false</c>。</returns>
-    public static bool operator !=(BitData left, BitData right) => !left.Equals(right);
+    public static bool operator !=(BitData left, BitData right) =>  left.Value != right.Value;
 }
