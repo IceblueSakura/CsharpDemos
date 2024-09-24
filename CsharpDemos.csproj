@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>CsharpDemos</RootNamespace>
+    <TargetFramework>net8.0</TargetFramework>
+
+  </PropertyGroup>
+
+</Project>

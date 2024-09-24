@@ -1,7 +1,7 @@
 namespace DataBox
 {
     /// <summary>
-    /// 位打包工具类，用于在字节数组中存储和检索不同位长度的数据。实际空间占用为实际bit数+16bit(数据长度和组数)
+    /// 位打包工具类，用于在字节数组中存储和检索不同位长度的数据。实际空间占用为实际bit数向上取整byte+2byte(数据长度和组数)
     /// <br/>
     /// 整体结构类似二维数组，X Bit的Y 组数据
     /// <br/>
@@ -9,11 +9,11 @@ namespace DataBox
     /// <br/>
     /// 如果数据是2个11bit，内存布局为：<br/>
     /// [[byte][byte][byte]]<br/>
-    /// [11111111][11122222][222222]=22 bit，最后一个bit没写满,整个数组一共使用38 bit<br/>
+    /// [11111111][11122222][222222xx]=22 bit，最后一个bit没写满,整个数组一共使用3 byte<br/>
     /// </summary>
     public class BitPacker
     {
-        private readonly byte[] _data; // 原始数据
+        private readonly byte[] _data; // 原始数据，在堆上
         private readonly byte _bitLength; // 每个数据项的数据位长
         private readonly byte _count; // 数据项数量
 

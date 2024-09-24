@@ -8,8 +8,9 @@ namespace DataBox
     /// BitData结构，用于封装8到32位的数据
     /// 使用结构体，在栈中寻址快，值类型不涉及垃圾回收，生命周期结束销毁
     /// </summary>
-    [StructLayout(LayoutKind.Explicit, Pack = 1)] // 手动管理内存布局，对齐长度为1(最紧凑)
-    public struct BitData
+    [Obsolete("BitDataStruct is deprecated, please use BitData instead.")]
+    [StructLayout(LayoutKind.Explicit, Pack = 1,Size = 5)] // 手动管理内存布局，对齐长度为1(最紧凑)
+    public struct BitDataStruct
     {
         [FieldOffset(0)] // 使用结构体开头的16bit
         private readonly ushort _data16; // 没使用byte[] 因为数组时引用类型，频繁分配会触发GC
@@ -24,7 +25,7 @@ namespace DataBox
         /// </summary>
         /// <param name="data">实际数据值</param>
         /// <param name="bitLength">数据的有效位长度（8到32位）</param>
-        public BitData(uint data, byte bitLength)
+        public BitDataStruct(uint data, byte bitLength)
         {
             if (bitLength < 8 || bitLength > 20)
                 throw new ArgumentOutOfRangeException(nameof(bitLength), "位长度必须在8到32位之间。");
@@ -95,20 +96,20 @@ namespace DataBox
         /// <summary>
         /// 隐式转换，从BitData到基础类型（byte, ushort, uint）
         /// </summary>
-        /// <param name="bitData">BitData实例</param>
-        public static implicit operator byte(BitData bitData)
+        /// <param name="bitDataStruct">BitData实例</param>
+        public static implicit operator byte(BitDataStruct bitDataStruct)
         {
-            return bitData.Get8();
+            return bitDataStruct.Get8();
         }
 
-        public static implicit operator ushort(BitData bitData)
+        public static implicit operator ushort(BitDataStruct bitDataStruct)
         {
-            return bitData.Get16();
+            return bitDataStruct.Get16();
         }
 
-        public static implicit operator uint(BitData bitData)
+        public static implicit operator uint(BitDataStruct bitDataStruct)
         {
-            return bitData.Get32();
+            return bitDataStruct.Get32();
         }
 
         /// <summary>
@@ -116,20 +117,20 @@ namespace DataBox
         /// 默认位长度为数据类型的位数
         /// </summary>
         /// <param name="value">基础类型值</param>
-        public static implicit operator BitData(byte value)
+        public static implicit operator BitDataStruct(byte value)
         {
-            return new BitData(value, 8);
+            return new BitDataStruct(value, 8);
         }
 
-        public static implicit operator BitData(ushort value)
+        public static implicit operator BitDataStruct(ushort value)
         {
-            return new BitData(value, 16);
+            return new BitDataStruct(value, 16);
         }
 
-        public static implicit operator BitData(uint value)
+        public static implicit operator BitDataStruct(uint value)
         {
             // 默认使用32位，如果实际位数更小可以通过另一个构造函数实现
-            return new BitData(value, 32);
+            return new BitDataStruct(value, 32);
         }
         
         /// <summary>
@@ -139,7 +140,7 @@ namespace DataBox
         {
             get
             {
-                return Marshal.SizeOf(typeof(BitData));
+                return Marshal.SizeOf(typeof(BitDataStruct));
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace DataBox
@@ -8,7 +9,6 @@ namespace DataBox
         public static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            // BitDataTest();
             BitPackerTest();
         }
 
@@ -43,36 +43,20 @@ namespace DataBox
                 var value = packerFromRaw.GetValue(i);
                 Console.WriteLine($"从原始数据创建的BitPacker - 数据项 {i} 的值：0x{value:X}");
             }
-        }
 
-        private static void BitDataTest()
-        {
-            Console.WriteLine($"BitData 结构体的大小：{BitData.Size} 字节"); // 应输出5字节
+            var stopwatch = new Stopwatch();
+            Console.WriteLine("进行操作耗时分析");
+            BitPacker tmp = null;
+            stopwatch.Start();
+            for (var i = 0; i < 100000000; i++)
+            {
+                tmp = BitPacker.FromRawData(rawData, bitLength, count); // 加载之前有5组12bit数据的实例
+                tmp.GetValue(3); // 获取第三组的数据值
+            }
 
-            // 示例1：8位数据
-            BitData data8Bit = new BitData(0xAA, 8); // 0xAA = 170
-            Console.WriteLine($"8位数据的值（byte）：{data8Bit.Get8()}");
-
-            // 示例2：16位数据
-            BitData data16Bit = new BitData(0xABCD, 16); // 0xABCD = 43981
-            Console.WriteLine($"16位数据的值（ushort）：{data16Bit.GetData<ushort>()}");
-
-            // 示例3：20位数据
-            BitData data20Bit = new BitData(0xABCDE, 20); // 0xABCDE = 703710
-            Console.WriteLine($"20位数据的值（uint）：{data20Bit.GetData<uint>()}");
-
-            // 示例4：隐式转换
-            BitData fromByte = (byte)0x7F; // 127
-            byte byteValue = fromByte;
-            Console.WriteLine($"隐式转换后的byte值：{byteValue}");
-
-            BitData fromUshort = (ushort)0x1234; // 4660
-            ushort ushortValue = fromUshort;
-            Console.WriteLine($"隐式转换后的ushort值：{ushortValue}");
-
-            BitData fromUint = 0xABCDE; // 703710
-            uint uintValue = fromUint;
-            Console.WriteLine($"隐式转换后的uint值：{uintValue}");
+            stopwatch.Stop();
+            Console.WriteLine(
+                $"一万次操作耗时: {stopwatch.ElapsedMilliseconds} 毫秒"); // 存储有效数据75,000 byte，实际占用320,000 byte，如果纯用ushort存需要160,000 byte
         }
     }
 }

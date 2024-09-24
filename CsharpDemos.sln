@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBox", "DataBox\DataBox.csproj", "{156D7379-D532-46A5-BC2F-82A1DD53C2AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskSwitcher", "TaskSwitcher\TaskSwitcher.csproj", "{1D1A1187-75E0-4166-8DB5-39B64B95D61C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{5E4252C4-0823-47F9-8F14-66687E2FC604}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{156D7379-D532-46A5-BC2F-82A1DD53C2AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{156D7379-D532-46A5-BC2F-82A1DD53C2AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{156D7379-D532-46A5-BC2F-82A1DD53C2AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D1A1187-75E0-4166-8DB5-39B64B95D61C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D1A1187-75E0-4166-8DB5-39B64B95D61C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D1A1187-75E0-4166-8DB5-39B64B95D61C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D1A1187-75E0-4166-8DB5-39B64B95D61C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E4252C4-0823-47F9-8F14-66687E2FC604}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E4252C4-0823-47F9-8F14-66687E2FC604}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E4252C4-0823-47F9-8F14-66687E2FC604}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E4252C4-0823-47F9-8F14-66687E2FC604}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
